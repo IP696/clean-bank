@@ -5,16 +5,19 @@ import com.cleanbank.entities.UserEntity;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private UserPresenter presenter;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, UserPresenter presenter) {
         this.userRepository = userRepository;
+        this.presenter = presenter;
     }
 
     @Override
-    public CreateUserResponse createUser(CreateUserRequest userRequest) {
-       UserEntity userEntity = userRepository.findUserById(userRequest.getId());
+    public UserPresenter createUser(CreateUserRequest userRequest) {
+        UserEntity userEntity = userRepository.findUserById(userRequest.getId());
         CreateUserResponse response = new CreateUserResponse();
         response.setUserName(userEntity.getName());
-        return response;
+        presenter.fillViewModel(response);
+        return presenter;
     }
 }

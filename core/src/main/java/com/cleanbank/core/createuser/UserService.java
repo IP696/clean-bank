@@ -1,5 +1,5 @@
 package com.cleanbank.core.createuser;
 
 public interface UserService {
-    CreateUserResponse createUser(CreateUserRequest userRequest);
+    UserPresenter createUser(CreateUserRequest userRequest);
 }

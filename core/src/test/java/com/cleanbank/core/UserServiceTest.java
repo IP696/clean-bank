@@ -10,12 +10,13 @@ import static org.junit.Assert.assertEquals;
 public class UserServiceTest {
 
     private UserService userService;
-    private UserRepository userRepository;
 
     @Before
     public void setUp() {
-        userRepository = new UserRepositoryStub();
-        userService = new UserServiceImpl(userRepository);
+        UserRepository userRepository = new UserRepositoryStub();
+        UserPresenter presenter = new UserPresenterStub();
+
+        userService = new UserServiceImpl(userRepository, presenter);
     }
 
     @Test
@@ -23,17 +24,38 @@ public class UserServiceTest {
         CreateUserRequest userRequest = new CreateUserRequest();
         userRequest.setId(1L);
 
-        CreateUserResponse userResponse = userService.createUser(userRequest);
+        UserPresenter presenter = userService.createUser(userRequest);
 
-        assertEquals("userName", userResponse.getUserName());
+        assertEquals("userName", presenter.getViewModel().getUserName());
     }
 
-    private class UserRepositoryStub implements UserRepository {
+    private static class UserRepositoryStub implements UserRepository {
         @Override
         public UserEntity findUserById(long id) {
             UserEntity userEntity = new UserEntity();
             userEntity.setName("userName");
             return userEntity;
+        }
+    }
+
+    private static class UserPresenterStub implements UserPresenter {
+
+        private UserViewModel userViewModel;
+
+        @Override
+        public void showCreatedUser(CreateUserResponse response) {
+            System.out.println(userViewModel.getUserName());
+        }
+
+        @Override
+        public UserViewModel getViewModel() {
+            return userViewModel;
+        }
+
+        @Override
+        public void fillViewModel(CreateUserResponse response) {
+            userViewModel = new UserViewModel();
+            userViewModel.setUserName(response.getUserName());
         }
     }
 }
