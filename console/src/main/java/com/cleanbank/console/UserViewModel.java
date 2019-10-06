@@ -1,4 +1,4 @@
-package com.cleanbank.core.createuser;
+package com.cleanbank.console;
 
 public class UserViewModel {
     private String userName;

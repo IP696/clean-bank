@@ -5,8 +5,6 @@ import com.cleanbank.entities.UserEntity;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-
 public class UserServiceTest {
 
     private UserService userService;
@@ -25,8 +23,7 @@ public class UserServiceTest {
         userRequest.setId(1L);
 
         UserPresenter presenter = userService.createUser(userRequest);
-
-        assertEquals("userName", presenter.getViewModel().getUserName());
+        presenter.showCreatedUser();
     }
 
     private static class UserRepositoryStub implements UserRepository {
@@ -39,23 +36,14 @@ public class UserServiceTest {
     }
 
     private static class UserPresenterStub implements UserPresenter {
-
-        private UserViewModel userViewModel;
-
         @Override
-        public void showCreatedUser(CreateUserResponse response) {
-            System.out.println(userViewModel.getUserName());
-        }
-
-        @Override
-        public UserViewModel getViewModel() {
-            return userViewModel;
+        public void showCreatedUser() {
+            System.out.println("userName");
         }
 
         @Override
         public void fillViewModel(CreateUserResponse response) {
-            userViewModel = new UserViewModel();
-            userViewModel.setUserName(response.getUserName());
+
         }
     }
 }
