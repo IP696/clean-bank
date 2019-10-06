@@ -1,3 +1,4 @@
 rootProject.name = 'clean-bank'
 include 'core'
+include 'entities'
 
